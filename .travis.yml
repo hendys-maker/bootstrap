@@ -2,9 +2,10 @@ sudo: required
 dist: trusty
 language: node_js
 git:
-  depth: 10
+  depth: 3
 node_js:
-  - "0.12"
+  - "4"
+  - "6"
 before_install:
   # Remove ./node_modules/.bin from PATH so node-which doesn't replace Unix which and cause RVM to barf. See https://github.com/travis-ci/travis-ci/issues/5092
   - export PATH=$(python -c 'from sys import argv;from collections import OrderedDict as od;print(":".join(od((p,None) for p in argv[1].split(":") if p.startswith("/")).keys()))' "$PATH")
@@ -34,7 +35,11 @@ env:
     - TWBS_TEST=validate-html
     - TWBS_TEST=sauce-js-unit
 matrix:
-  fast_finish: true
+  exclude:
+    - node_js: "4"
+      env: TWBS_TEST=validate-html
+    - node_js: "4"
+      env: TWBS_TEST=sauce-js-unit
 notifications:
   slack: heybb:iz4wwosL0N0EdaX1gvgkU0NH
   webhooks:
